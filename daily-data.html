@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البيانات اليومية - نظام إدارة العمليات المستشفى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-gray-50 font-cairo">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-hospital text-2xl text-blue-600 ml-2"></i>
+                        <span class="text-xl font-bold text-gray-900">نظام إدارة العمليات</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-8">
+                    <div class="hidden md:flex space-x-8">
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-home ml-1"></i>الرئيسية
+                        </a>
+                        <a href="data-entry.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-plus ml-1"></i>إدخال البيانات
+                        </a>
+                        <a href="analysis.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-chart-bar ml-1"></i>تحليل البيانات
+                        </a>
+                        <a href="gallery.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-images ml-1"></i>المعرض
+                        </a>
+                    </div>
+                    
+                    <button onclick="AuthManager.logout()" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-sign-out-alt ml-1"></i>تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden bg-white shadow-lg">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-home ml-1"></i>الرئيسية
+            </a>
+            <a href="data-entry.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-plus ml-1"></i>إدخال البيانات
+            </a>
+            <a href="analysis.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-chart-bar ml-1"></i>تحليل البيانات
+            </a>
+            <a href="gallery.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-images ml-1"></i>المعرض
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-calendar-day ml-2"></i>البيانات اليومية
+                </h1>
+
+                <!-- Date Filter -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <div class="flex flex-col md:flex-row gap-4 items-end">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">اختر التاريخ</label>
+                            <input type="date" id="selectedDate" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button onclick="loadDailyData()" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                            <i class="fas fa-search ml-2"></i>عرض البيانات
+                        </button>
+                        <button onclick="exportDailyData()" class="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">
+                            <i class="fas fa-download ml-2"></i>تصدير
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Daily Summary -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-procedures text-2xl text-blue-600 ml-3"></i>
+                            <div>
+                                <p class="text-sm text-blue-600">العمليات اليومية</p>
+                                <p class="text-2xl font-bold text-blue-900" id="dailyOperations">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-2xl text-green-600 ml-3"></i>
+                            <div>
+                                <p class="text-sm text-green-600">إجمالي المدة</p>
+                                <p class="text-2xl font-bold text-green-900" id="totalDuration">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-md text-2xl text-purple-600 ml-3"></i>
+                            <div>
+                                <p class="text-sm text-purple-600">الأطباء النشطين</p>
+                                <p class="text-2xl font-bold text-purple-900" id="activeDoctors">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-4 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-2xl text-yellow-600 ml-3"></i>
+                            <div>
+                                <p class="text-sm text-yellow-600">حالات مستقرة</p>
+                                <p class="text-2xl font-bold text-yellow-900" id="stableToday">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operations Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    اسم المريض
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    رقم الملف
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    الطبيب
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    نوع العملية
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    الوقت
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    المدة
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    الحالة
+                                </th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    ملاحظات
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="dailyDataBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- No Data Message -->
+                <div id="noDataMessage" class="hidden text-center py-8">
+                    <i class="fas fa-inbox text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500">لا توجد بيانات لهذا التاريخ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/database.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Check authentication
+        if (!AuthManager.isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+
+        // Set today's date as default
+        document.getElementById('selectedDate').value = new Date().toISOString().split('T')[0];
+
+        async function loadDailyData() {
+            const selectedDate = document.getElementById('selectedDate').value;
+            const operations = await DatabaseManager.getOperations();
+            
+            const dailyOperations = operations.filter(op => op.operationDate === selectedDate);
+            
+            // Update summary statistics
+            document.getElementById('dailyOperations').textContent = dailyOperations.length;
+            
+            const totalDuration = dailyOperations.reduce((sum, op) => sum + op.duration, 0);
+            document.getElementById('totalDuration').textContent = totalDuration + ' دقيقة';
+            
+            const uniqueDoctors = [...new Set(dailyOperations.map(op => op.doctorName))];
+            document.getElementById('activeDoctors').textContent = uniqueDoctors.length;
+            
+            const stableCases = dailyOperations.filter(op => op.patientStatus === 'مستقر').length;
+            document.getElementById('stableToday').textContent = stableCases;
+
+            // Update table
+            const tbody = document.getElementById('dailyDataBody');
+            tbody.innerHTML = '';
+
+            if (dailyOperations.length === 0) {
+                document.getElementById('noDataMessage').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('noDataMessage').classList.add('hidden');
+
+            dailyOperations.forEach(operation => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ${operation.patientName}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${operation.fileNumber}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${operation.doctorName}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${operation.operationType}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${operation.operationTime}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${operation.duration} دقيقة
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            operation.patientStatus === 'مستقر' ? 'bg-green-100 text-green-800' :
+                            operation.patientStatus === 'تحت الملاحظة' ? 'bg-yellow-100 text-yellow-800' :
+                            operation.patientStatus === 'حرج' ? 'bg-red-100 text-red-800' :
+                            'bg-purple-100 text-purple-800'
+                        }">
+                            ${operation.patientStatus}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${operation.notes || '-'}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function exportDailyData() {
+            const selectedDate = document.getElementById('selectedDate').value;
+            DatabaseManager.exportDailyData(selectedDate);
+        }
+
+        // Load data on page load
+        loadDailyData();
+    </script>
+</body>
+</html>

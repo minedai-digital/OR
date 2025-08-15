@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المعرض - نظام إدارة العمليات المستشفى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-gray-50 font-cairo">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-hospital text-2xl text-blue-600 ml-2"></i>
+                        <span class="text-xl font-bold text-gray-900">نظام إدارة العمليات</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-8">
+                    <div class="hidden md:flex space-x-8">
+                        <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-home ml-1"></i>الرئيسية
+                        </a>
+                        <a href="data-entry.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-plus ml-1"></i>إدخال البيانات
+                        </a>
+                        <a href="analysis.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-chart-bar ml-1"></i>تحليل البيانات
+                        </a>
+                        <a href="daily-data.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-calendar-day ml-1"></i>البيانات اليومية
+                        </a>
+                    </div>
+                    
+                    <button onclick="AuthManager.logout()" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-sign-out-alt ml-1"></i>تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden bg-white shadow-lg">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="dashboard.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-home ml-1"></i>الرئيسية
+            </a>
+            <a href="data-entry.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-plus ml-1"></i>إدخال البيانات
+            </a>
+            <a href="analysis.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-chart-bar ml-1"></i>تحليل البيانات
+            </a>
+            <a href="daily-data.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-calendar-day ml-1"></i>البيانات اليومية
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h1 class="text-3xl font-bold text-gray-900 mb-6">
+                    <i class="fas fa-images ml-2"></i>معرض الصور
+                </h1>
+
+                <!-- Upload Section -->
+                <div class="bg-gray-50 p-6 rounded-lg mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">رفع صورة جديدة</h2>
+                    <form id="uploadForm" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">اختر الصورة</label>
+                            <input type="file" id="imageFile" accept="image/*" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">العنوان</label>
+                            <input type="text" id="imageTitle" placeholder="أدخل عنوان الصورة" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">الوصف</label>
+                            <textarea id="imageDescription" rows="3" placeholder="أدخل وصف الصورة" 
+                                      class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                            <i class="fas fa-upload ml-2"></i>رفع الصورة
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Gallery Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="galleryGrid">
+                    <!-- Images will be populated here -->
+                </div>
+
+                <!-- No Images Message -->
+                <div id="noImagesMessage" class="hidden text-center py-12">
+                    <i class="fas fa-image text-6xl text-gray-400 mb-4"></i>
+                    <h3 class="text-xl font-medium text-gray-900 mb-2">لا توجد صور في المعرض</h3>
+                    <p class="text-gray-500">ابدأ برفع صور جديدة لعرضها هنا</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg max-w-4xl max-h-full overflow-auto">
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 id="modalTitle" class="text-xl font-semibold text-gray-900"></h3>
+                        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    <img id="modalImage" src="" alt="" class="w-full h-auto rounded-lg">
+                    <p id="modalDescription" class="mt-4 text-gray-600"></p>
+                    <p id="modalDate" class="mt-2 text-sm text-gray-500"></p>
+                    <button onclick="deleteImage()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
+                        <i class="fas fa-trash ml-2"></i>حذف الصورة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/database.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Check authentication
+        if (!AuthManager.isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+
+        let currentImageId = null;
+
+        // Load gallery on page load
+        loadGallery();
+
+        // Handle form submission
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('imageFile');
+            const title = document.getElementById('imageTitle').value;
+            const description = document.getElementById('imageDescription').value;
+            
+            if (!fileInput.files[0]) {
+                alert('الرجاء اختيار صورة');
+                return;
+            }
+            
+            if (!title.trim()) {
+                alert('الرجاء إدخال عنوان للصورة');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const imageData = {
+                    id: Date.now(),
+                    title: title,
+                    description: description,
+                    imageData: e.target.result,
+                    uploadDate: new Date().toISOString()
+                };
+                
+                await DatabaseManager.saveImage(imageData);
+                loadGallery();
+                
+                // Reset form
+                document.getElementById('uploadForm').reset();
+            };
+            
+            reader.readAsDataURL(fileInput.files[0]);
+        });
+
+        async function loadGallery() {
+            const images = await DatabaseManager.getImages();
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            if (images.length === 0) {
+                document.getElementById('noImagesMessage').classList.remove('hidden');
+                galleryGrid.innerHTML = '';
+                return;
+            }
+
+            document.getElementById('noImagesMessage').classList.add('hidden');
+            galleryGrid.innerHTML = '';
+
+            images.forEach(image => {
+                const imageCard = document.createElement('div');
+                imageCard.className = 'bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow';
+                imageCard.innerHTML = `
+                    <img src="${image.imageData}" alt="${image.title}" 
+                         class="w-full h-48 object-cover" onclick="openModal(${image.id})">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">${image.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${image.description || 'لا يوجد وصف'}</p>
+                        <p class="text-xs text-gray-500">
+                            <i class="fas fa-calendar ml-1"></i>
+                            ${new Date(image.uploadDate).toLocaleDateString('ar-SA')}
+                        </p>
+                    </div>
+                `;
+                galleryGrid.appendChild(imageCard);
+            });
+        }
+
+        async function openModal(imageId) {
+            const images = await DatabaseManager.getImages();
+            const image = images.find(img => img.id === imageId);
+            
+            if (image) {
+                currentImageId = imageId;
+                document.getElementById('modalTitle').textContent = image.title;
+                document.getElementById('modalImage').src = image.imageData;
+                document.getElementById('modalDescription').textContent = image.description || 'لا يوجد وصف';
+                document.getElementById('modalDate').textContent = `تاريخ الرفع: ${new Date(image.uploadDate).toLocaleDateString('ar-SA')}`;
+                document.getElementById('imageModal').classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+            currentImageId = null;
+        }
+
+        async function deleteImage() {
+            if (currentImageId && confirm('هل أنت متأكد من حذف هذه الصورة؟')) {
+                await DatabaseManager.deleteImage(currentImageId);
+                closeModal();
+                loadGallery();
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

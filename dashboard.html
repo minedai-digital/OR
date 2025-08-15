@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية - نظام إدارة العمليات المستشفى</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-gray-50 font-cairo">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-hospital text-2xl text-blue-600 ml-2"></i>
+                        <span class="text-xl font-bold text-gray-900">نظام إدارة العمليات</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-8">
+                    <div class="hidden md:flex space-x-8">
+                        <a href="data-entry.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-plus ml-1"></i>إدخال البيانات
+                        </a>
+                        <a href="analysis.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-chart-bar ml-1"></i>تحليل البيانات
+                        </a>
+                        <a href="daily-data.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-calendar-day ml-1"></i>البيانات اليومية
+                        </a>
+                        <a href="gallery.html" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-images ml-1"></i>المعرض
+                        </a>
+                    </div>
+                    
+                    <button onclick="AuthManager.logout()" class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <i class="fas fa-sign-out-alt ml-1"></i>تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden bg-white shadow-lg">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a href="data-entry.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-plus ml-1"></i>إدخال البيانات
+            </a>
+            <a href="analysis.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-chart-bar ml-1"></i>تحليل البيانات
+            </a>
+            <a href="daily-data.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-calendar-day ml-1"></i>البيانات اليومية
+            </a>
+            <a href="gallery.html" class="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">
+                <i class="fas fa-images ml-1"></i>المعرض
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <div class="px-4 py-6 sm:px-0">
+            <div class="text-center">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                    مرحباً بك في نظام إدارة العمليات المستشفى
+                </h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    اختر أحد الخيارات التالية لبدء العمل
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="data-entry.html" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-center">
+                            <i class="fas fa-plus text-4xl text-blue-600 mb-4"></i>
+                            <h3 class="text-lg font-semibold text-gray-900">إدخال البيانات</h3>
+                            <p class="text-gray-600 mt-2">إضافة عمليات جديدة</p>
+                        </div>
+                    </a>
+                    
+                    <a href="analysis.html" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-center">
+                            <i class="fas fa-chart-bar text-4xl text-green-600 mb-4"></i>
+                            <h3 class="text-lg font-semibold text-gray-900">تحليل البيانات</h3>
+                            <p class="text-gray-600 mt-2">عرض التقارير والإحصائيات</p>
+                        </div>
+                    </a>
+                    
+                    <a href="daily-data.html" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-center">
+                            <i class="fas fa-calendar-day text-4xl text-purple-600 mb-4"></i>
+                            <h3 class="text-lg font-semibold text-gray-900">البيانات اليومية</h3>
+                            <p class="text-gray-600 mt-2">عرض البيانات اليومية</p>
+                        </div>
+                    </a>
+                    
+                    <a href="gallery.html" class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                        <div class="text-center">
+                            <i class="fas fa-images text-4xl text-orange-600 mb-4"></i>
+                            <h3 class="text-lg font-semibold text-gray-900">المعرض</h3>
+                            <p class="text-gray-600 mt-2">إدارة الصور</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Check authentication
+        if (!AuthManager.isAuthenticated()) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
