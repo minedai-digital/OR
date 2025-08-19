@@ -1,7 +1,7 @@
 // Main Application Controller
 class AppController {
     constructor() {
-        this.currentPage = 'login';
+        this.currentPage = 'index';
         this.init();
     }
 
