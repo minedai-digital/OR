@@ -62,7 +62,7 @@ const AuthManager = {
     /**
      * التحقق من حالة تسجيل الدخول
      */
-    isLoggedIn: function () {
+    isAuthenticated: function () {
         return !!sessionStorage.getItem("loggedInUser");
     }
 };

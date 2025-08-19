@@ -191,7 +191,7 @@
 
         async function loadDailyData() {
             const selectedDate = document.getElementById('selectedDate').value;
-            const operations = await DatabaseManager.getOperations();
+            const operations = await window.databaseManager.getOperations();
             
             const dailyOperations = operations.filter(op => op.operationDate === selectedDate);
             
@@ -259,7 +259,8 @@
 
         function exportDailyData() {
             const selectedDate = document.getElementById('selectedDate').value;
-            DatabaseManager.exportDailyData(selectedDate);
+            const operations = window.databaseManager.getOperations({ date: selectedDate });
+            window.databaseManager.exportToCSV(operations, `operations_${selectedDate}.csv`);
         }
 
         // Load data on page load
